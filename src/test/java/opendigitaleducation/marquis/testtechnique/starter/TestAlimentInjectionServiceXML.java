@@ -2,6 +2,7 @@ package opendigitaleducation.marquis.testtechnique.starter;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.EventBus;
+import io.vertx.core.json.JsonObject;
 import io.vertx.junit5.VertxExtension;
 import io.vertx.junit5.VertxTestContext;
 import org.junit.jupiter.api.DisplayName;
@@ -25,7 +26,10 @@ public class TestAlimentInjectionServiceXML {
       eventBus.request("aliment.data.xmlInjecteur.get", "Champignon à la grecque", busReply -> testContext.verify(() -> {
         {
           assertThat(busReply.succeeded()).as("bus reply").isTrue();
-          AlimentDTO champigonData=(AlimentDTO) busReply.result().body();
+          assertThat(busReply.result().body()).isInstanceOf(JsonObject.class);
+
+          JsonObject champigonJson=(JsonObject) busReply.result().body();
+          AlimentDTO champigonData = champigonJson.mapTo(AlimentDTO.class);
           assertThat(champigonData.getName()).isEqualTo("Champignon à la grecque");
           assertThat(champigonData.getGlucides()).as("%s's proteine", champigonData.getName()).isEqualTo(3.95);
           assertThat(champigonData.getLipides()).as("%s's lipides", champigonData.getName()).isEqualTo(3.55);
