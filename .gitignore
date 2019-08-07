@@ -188,3 +188,5 @@ nbdist/
 !.vscode/extensions.json
 
 \.idea/
+
+stale_outputs_checked
