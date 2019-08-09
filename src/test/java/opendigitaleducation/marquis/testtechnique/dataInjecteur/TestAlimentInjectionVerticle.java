@@ -1,4 +1,4 @@
-package opendigitaleducation.marquis.testtechnique;
+package opendigitaleducation.marquis.testtechnique.dataInjecteur;
 
 import io.vertx.config.ConfigRetriever;
 import io.vertx.core.Vertx;
@@ -7,9 +7,8 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.MongoClient;
 import io.vertx.junit5.VertxExtension;
 import io.vertx.junit5.VertxTestContext;
-import opendigitaleducation.marquis.testtechnique.dataInjecteur.AlimentInjectionVerticle;
-import opendigitaleducation.marquis.testtechnique.dataInjecteur.InjectionOptionDTO;
-import opendigitaleducation.marquis.testtechnique.dataInjecteur.InjectionSourceType;
+import opendigitaleducation.marquis.testtechnique.AlimentDTO;
+import opendigitaleducation.marquis.testtechnique.ProjectConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,7 +42,7 @@ class TestAlimentInjectionVerticle {
   }
 
   @Test
-  @DisplayName("Cheking if the Aliment are saved in mongoDB")
+  @DisplayName("Checking if the Aliment are saved in mongoDB")
   void CheckAlimentSaved(Vertx vertx, VertxTestContext testContext) {
     vertx.deployVerticle(new AlimentInjectionVerticle(), id -> {
       ConfigRetriever retriever = ConfigRetriever.create(vertx);

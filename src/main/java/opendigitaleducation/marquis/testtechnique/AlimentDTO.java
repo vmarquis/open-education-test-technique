@@ -3,10 +3,10 @@ package opendigitaleducation.marquis.testtechnique;
 public class AlimentDTO {
   private String Name;
   private String _id;
-  private double Proteines;
-  private double Glucides;
-  private double Lipides;
-  private int Code;
+  private double Proteines=-1;
+  private double Glucides=-1;
+  private double Lipides=-1;
+  private int Code=-1;
 
   public String getName() {
     return Name;
