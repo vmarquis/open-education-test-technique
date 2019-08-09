@@ -190,3 +190,5 @@ nbdist/
 \.idea/
 
 stale_outputs_checked
+
+java_pid23784\.hprof
