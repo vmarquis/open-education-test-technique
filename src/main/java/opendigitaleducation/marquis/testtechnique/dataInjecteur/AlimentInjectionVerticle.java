@@ -9,7 +9,7 @@ public class AlimentInjectionVerticle extends AbstractVerticle {
   @SuppressWarnings("unchecked")  //Je ne gere pas les erreurs pour le test
   @Override
   public void start(Promise<Void> startPromise) {
-    EventBusStarter startInjection = new DataInjectionStarter();
+    EventBusStarter startInjection = new AlimentInjectionStarter();
     EventBusStarter alimentSaver = new AlimentSaver();
     Future<Object> startEventBusConsumerDataInjection = Future.future(promise -> startInjection.StartEventBusConsumer(vertx, promise));
     Future<Object> startEventBusConsumerAlimentSaver = Future.future(promise -> alimentSaver.StartEventBusConsumer(vertx, promise));

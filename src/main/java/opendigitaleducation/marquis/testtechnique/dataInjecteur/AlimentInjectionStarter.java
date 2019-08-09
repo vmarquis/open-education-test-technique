@@ -5,7 +5,7 @@ import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.json.JsonObject;
 
-public class DataInjectionStarter implements EventBusStarter {
+public class AlimentInjectionStarter implements EventBusStarter {
   @Override
   public void StartEventBusConsumer(Vertx vertx, Promise<Object> eventBusStartpromise) {
     EventBus eb = vertx.eventBus();
@@ -13,7 +13,7 @@ public class DataInjectionStarter implements EventBusStarter {
       InjectionOptionDTO injectionOptionDTO = ((JsonObject) message.body()).mapTo(InjectionOptionDTO.class);
       // Je laisse pour montrer que l'on peut utiliser plusieurs injecteurs
       //noinspection SwitchStatementWithTooFewBranches
-      switch (injectionOptionDTO.InjectionSource) {
+      switch (injectionOptionDTO.getInjectionSource()) {
         case CiquALXml:
           eb.send("aliment.data.inject.CiquALXml.start", message.body());
       }
