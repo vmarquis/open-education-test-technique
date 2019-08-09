@@ -6,7 +6,7 @@ import io.vertx.core.Future;
 import io.vertx.core.Promise;
 
 public class AlimentInjectionVerticle extends AbstractVerticle {
-  @SuppressWarnings("unchecked")  //Je ne gere pas les erreurs pour le test
+  @SuppressWarnings("unchecked")  //Pas resilient pour le test technique
   @Override
   public void start(Promise<Void> startPromise) {
     EventBusStarter startInjection = new AlimentInjectionStarter();
