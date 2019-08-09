@@ -28,15 +28,15 @@ class TestAlimentReaderInjectionVerticle {
   }
 
   @Test
-  @DisplayName("Checking CliquAlInjectionVerticle send aliment JSON")
-  void CheckEventSend(VertxTestContext testContext) {
+  @DisplayName("Checking read CliquAl Xml aliments")
+  void CheckReadAliment(VertxTestContext testContext) {
     InjectionOptionDTO injectionOptionDTO = new InjectionOptionDTO();
     injectionOptionDTO.setInjectionSource(InjectionSourceType.CiquALXml);
     injectionOptionDTO.setCliqAlAlimFile("alim_2017 11 21.xml");
     injectionOptionDTO.setCliqAlDirectory("ressources");
 
     eventBus.send("aliment.data.inject.CiquALXml.start", JsonObject.mapFrom(injectionOptionDTO));
-    eventBus.consumer("aliment.data.inject.CiquALXml.SetComposition", message -> {
+    eventBus.consumer("aliment.data.inject.CiquALXml.setComposition", message -> {
       AlimentDTO alimentToSave = ((JsonObject) message.body()).mapTo(AlimentDTO.class);
       if (alimentToSave.getCode() == 18066) //Eau du robinet
       {

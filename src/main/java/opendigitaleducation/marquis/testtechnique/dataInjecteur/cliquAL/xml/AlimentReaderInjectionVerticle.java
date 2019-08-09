@@ -15,28 +15,25 @@ public class AlimentReaderInjectionVerticle extends AbstractVerticle {
   @Override
   public void start(Promise<Void> startPromise) {
     EventBus eb = vertx.eventBus();
-
-    ConfigRetriever retriever = ConfigRetriever.create(vertx);
-    retriever.getConfig(ar -> eb.consumer("aliment.data.inject.CiquALXml.start", message -> {
-        InjectionOptionDTO injectionOptionDTO = ((JsonObject) message.body()).mapTo(InjectionOptionDTO.class);
+    eb.consumer("aliment.data.inject.CiquALXml.start", message -> {
+      InjectionOptionDTO injectionOptionDTO = ((JsonObject) message.body()).mapTo(InjectionOptionDTO.class);
 
 
-        vertx.fileSystem().open(injectionOptionDTO.getCliqAlDirectory() +"/"+ injectionOptionDTO.getCliqAlAlimFile(),
-          new OpenOptions(), result -> {
-            AsyncFile file = result.result();
-            RecordParser parser= RecordParser.newDelimited("</ALIM>", parsedBufer->{
-              AlimentDTO alimentDTO= new AlimentDTO();
-              String XML =parsedBufer.toString();
-              alimentDTO.setCode(Integer.parseInt(getXMLValue(XML,"<alim_code>","</alim_code>")));
-              alimentDTO.setName(getXMLValue(XML,"<alim_nom_fr>","</alim_nom_fr>"));
-              eb.send("aliment.data.inject.CiquALXml.SetComposition",JsonObject.mapFrom(alimentDTO));
-            } );
+      vertx.fileSystem().open(injectionOptionDTO.getCliqAlDirectory() +"/"+ injectionOptionDTO.getCliqAlAlimFile(),
+        new OpenOptions(), result -> {
+          AsyncFile file = result.result();
+          RecordParser parser= RecordParser.newDelimited("</ALIM>", parsedBufer->{
+            AlimentDTO alimentDTO= new AlimentDTO();
+            String XML =parsedBufer.toString();
+            alimentDTO.setCode(Integer.parseInt(getXMLValue(XML,"<alim_code>","</alim_code>")));
+            alimentDTO.setName(getXMLValue(XML,"<alim_nom_fr>","</alim_nom_fr>"));
+            eb.send("aliment.data.inject.CiquALXml.setComposition",JsonObject.mapFrom(alimentDTO));
+          } );
 
-            file.handler(parser)
-              .endHandler(v -> file.close());
+          file.handler(parser)
+            .endHandler(v -> file.close());
         });
-      })
-    );
+    });
     startPromise.complete();
   }
 
