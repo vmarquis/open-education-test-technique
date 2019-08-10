@@ -1,8 +1,8 @@
 package opendigitaleducation.marquis.testtechnique.agregateurs;
 
-@SuppressWarnings("unused") //JSon serialisation
+@SuppressWarnings({"unused", "WeakerAccess"}) //JSon serialisation
 public class CalorieRequestDTO {
-  private String searchAlimentName;
+  private String searchedAlimentName;
   private CalorieAgregateurType calorieAgregateurType;
 
   public CalorieAgregateurType getCalorieAgregateurType() {
@@ -13,11 +13,11 @@ public class CalorieRequestDTO {
     this.calorieAgregateurType = calorieAgregateurType;
   }
 
-  public String getSearchAlimentName() {
-    return searchAlimentName;
+  public String getSearchedAlimentName() {
+    return searchedAlimentName;
   }
 
-  public void setSearchAlimentName(String searchAlimentName) {
-    this.searchAlimentName = searchAlimentName;
+  public void setSearchedAlimentName(String searchedAlimentName) {
+    this.searchedAlimentName = searchedAlimentName;
   }
 }
