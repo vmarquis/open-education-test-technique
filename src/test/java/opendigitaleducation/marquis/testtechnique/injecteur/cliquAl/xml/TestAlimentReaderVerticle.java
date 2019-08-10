@@ -1,4 +1,4 @@
-package opendigitaleducation.marquis.testtechnique.dataInjecteur.cliquAl.xml;
+package opendigitaleducation.marquis.testtechnique.injecteur.cliquAl.xml;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.EventBus;
@@ -6,9 +6,9 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.junit5.VertxExtension;
 import io.vertx.junit5.VertxTestContext;
 import opendigitaleducation.marquis.testtechnique.AlimentDTO;
-import opendigitaleducation.marquis.testtechnique.dataInjecteur.cliquAL.xml.AlimentReaderVerticle;
-import opendigitaleducation.marquis.testtechnique.dataInjecteur.InjectionOptionDTO;
-import opendigitaleducation.marquis.testtechnique.dataInjecteur.InjectionSourceType;
+import opendigitaleducation.marquis.testtechnique.injecteur.cliquAL.xml.AlimentReaderVerticle;
+import opendigitaleducation.marquis.testtechnique.injecteur.InjectionOptionDTO;
+import opendigitaleducation.marquis.testtechnique.injecteur.InjectionSourceType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

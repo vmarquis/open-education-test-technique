@@ -1,4 +1,4 @@
-package opendigitaleducation.marquis.testtechnique.dataInjecteur.cliquAL.xml;
+package opendigitaleducation.marquis.testtechnique.injecteur.cliquAL.xml;
 
 import io.vertx.config.ConfigRetriever;
 import io.vertx.core.AbstractVerticle;

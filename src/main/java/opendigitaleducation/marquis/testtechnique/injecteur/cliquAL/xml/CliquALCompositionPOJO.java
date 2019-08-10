@@ -1,4 +1,4 @@
-package opendigitaleducation.marquis.testtechnique.dataInjecteur.cliquAL.xml;
+package opendigitaleducation.marquis.testtechnique.injecteur.cliquAL.xml;
 
 class CliquALCompositionPOJO {
   private double glucides;

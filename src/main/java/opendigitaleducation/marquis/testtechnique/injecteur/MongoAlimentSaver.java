@@ -1,4 +1,4 @@
-package opendigitaleducation.marquis.testtechnique.dataInjecteur;
+package opendigitaleducation.marquis.testtechnique.injecteur;
 
 import io.vertx.config.ConfigRetriever;
 import io.vertx.core.Promise;
@@ -25,27 +25,27 @@ public class MongoAlimentSaver implements EventBusStarter {
       mongoClient = MongoClient.createShared(vertx, new JsonObject()
         .put("connection_string", projectConfig.MongoDbConnectionString)
         .put("db_name", projectConfig.MongoDbAlimentDb));
-      consumeSaveAlimentMessage();
-      vertx.setPeriodic(1000, id -> SaveAlimentToMongo());
+      consumeBulckSaveAlimentMessage();
+      vertx.setPeriodic(1000, id -> BulckSaveAlimentToMongo());
       eventBusStartpromise.complete();
     });
   }
 
-  private void SaveAlimentToMongo() {
+  private void BulckSaveAlimentToMongo() {
     if(alimentsBulkUpsetToDo.size()>0)
     {
       mongoClient.bulkWrite(projectConfig.MongoDbCollection, alimentsBulkUpsetToDo, res->{
         if(res.failed())
           System.out.println("Mongo Save fail" + res.cause());
           else
-          eventBus.send("aliment.data.inject.saved",res.result().getUpserts().size());
+          eventBus.send("aliment.mongo.inject.saved",res.result().getUpserts().size());
       });
       alimentsBulkUpsetToDo =new ArrayList<>();
     }
   }
 
-  private void consumeSaveAlimentMessage() {
-    eventBus.consumer("aliment.data.inject.save", saveMessage -> {
+  private void consumeBulckSaveAlimentMessage() {
+    eventBus.consumer("aliment.mongo.inject.bulk.save", saveMessage -> {
       JsonObject alimentJson = ((JsonObject) saveMessage.body());
       alimentJson.remove("_id");
       alimentsBulkUpsetToDo.add(BulkOperation.createReplace(new JsonObject()

@@ -1,4 +1,4 @@
-package opendigitaleducation.marquis.testtechnique.dataInjecteur.cliquAL.xml;
+package opendigitaleducation.marquis.testtechnique.injecteur.cliquAL.xml;
 
 import io.vertx.config.ConfigRetriever;
 import io.vertx.core.AbstractVerticle;
@@ -51,7 +51,7 @@ public class CompositionReaderVerticle extends AbstractVerticle {
       alimentDTO.setGlucides(compo.getGlucides());
       alimentDTO.setProteines(compo.getProteines());
       alimentDTO.setLipides(compo.getLipides());
-      eventBus.send("aliment.data.inject.save", JsonObject.mapFrom(alimentDTO));
+      eventBus.send("aliment.mongo.inject.bulk.save", JsonObject.mapFrom(alimentDTO));
     });
   }
 

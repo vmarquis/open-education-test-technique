@@ -1,4 +1,4 @@
-package opendigitaleducation.marquis.testtechnique.dataInjecteur;
+package opendigitaleducation.marquis.testtechnique.injecteur;
 
 import io.vertx.config.ConfigRetriever;
 import io.vertx.core.Vertx;
@@ -52,7 +52,7 @@ class TestAlimentInjecteurVerticle {
         MongoClient mongoClient = MongoClient.createShared(vertx, new JsonObject()
           .put("connection_string", projectConfig.MongoDbConnectionString)
           .put("db_name", projectConfig.MongoDbAlimentDb));
-        eventBus.consumer("aliment.data.inject.saved", savedMessage -> mongoClient.find(projectConfig.MongoDbCollection,
+        eventBus.consumer("aliment.mongo.inject.saved", savedMessage -> mongoClient.find(projectConfig.MongoDbCollection,
           new JsonObject().put("code",1500),findTestAlimentResult ->{
           assertThat(findTestAlimentResult.succeeded()).isEqualTo(true);
             List<JsonObject> findAlimentList = findTestAlimentResult.result();
@@ -70,7 +70,7 @@ class TestAlimentInjecteurVerticle {
         mongoClient.removeDocuments(projectConfig.MongoDbCollection, new JsonObject(), cleanMongoCollectionResult ->
         {
           AlimentDTO testAliment =new AlimentDTO().setName("TestName").setGlucides(10).setLipides(5).setProteines(3).setCode(1500);
-          eventBus.send("aliment.data.inject.save",JsonObject.mapFrom(testAliment));
+          eventBus.send("aliment.mongo.inject.bulk.save",JsonObject.mapFrom(testAliment));
 
         });
       });

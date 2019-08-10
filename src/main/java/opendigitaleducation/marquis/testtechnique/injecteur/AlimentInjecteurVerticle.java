@@ -1,4 +1,4 @@
-package opendigitaleducation.marquis.testtechnique.dataInjecteur;
+package opendigitaleducation.marquis.testtechnique.injecteur;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.CompositeFuture;

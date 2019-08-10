@@ -1,4 +1,4 @@
-package opendigitaleducation.marquis.testtechnique.dataInjecteur;
+package opendigitaleducation.marquis.testtechnique.injecteur;
 
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;

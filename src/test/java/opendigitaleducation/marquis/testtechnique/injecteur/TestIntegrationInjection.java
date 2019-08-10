@@ -1,4 +1,4 @@
-package opendigitaleducation.marquis.testtechnique.dataInjecteur;
+package opendigitaleducation.marquis.testtechnique.injecteur;
 
 import io.vertx.config.ConfigRetriever;
 import io.vertx.core.*;
@@ -10,8 +10,8 @@ import io.vertx.junit5.VertxExtension;
 import io.vertx.junit5.VertxTestContext;
 import opendigitaleducation.marquis.testtechnique.AlimentDTO;
 import opendigitaleducation.marquis.testtechnique.ProjectConfig;
-import opendigitaleducation.marquis.testtechnique.dataInjecteur.cliquAL.xml.AlimentReaderVerticle;
-import opendigitaleducation.marquis.testtechnique.dataInjecteur.cliquAL.xml.CompositionReaderVerticle;
+import opendigitaleducation.marquis.testtechnique.injecteur.cliquAL.xml.AlimentReaderVerticle;
+import opendigitaleducation.marquis.testtechnique.injecteur.cliquAL.xml.CompositionReaderVerticle;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -58,7 +58,7 @@ class TestIntegrationInjection {
       assertThat(findAll.result().size()).isEqualTo(0);
 
       eventBus.send("aliment.data.inject.start", JsonObject.mapFrom(injectionOptionDTO));
-      eventBus.consumer("aliment.data.inject.saved", savedMessage -> {
+      eventBus.consumer("aliment.mongo.inject.saved", savedMessage -> {
         System.out.println("Saved " + (int) savedMessage.body());
         int testedCode = 18066;
         mongoClient.find(projectConfig.MongoDbCollection,

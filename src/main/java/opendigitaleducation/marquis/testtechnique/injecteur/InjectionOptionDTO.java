@@ -1,4 +1,4 @@
-package opendigitaleducation.marquis.testtechnique.dataInjecteur;
+package opendigitaleducation.marquis.testtechnique.injecteur;
 
 @SuppressWarnings("WeakerAccess") //Public pour Json serialisation
 public class InjectionOptionDTO {
