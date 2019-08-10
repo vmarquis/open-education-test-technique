@@ -28,8 +28,8 @@ class TestAlimentReaderInjectionVerticle {
   }
 
   @Test
-  @DisplayName("Checking read CliquAl Xml aliments")
-  void CheckReadAliment(VertxTestContext testContext) {
+  @DisplayName("Checking StartInject CliquAL (reading XML aliments)")
+  void CheckStartInjectCliquAlXML(VertxTestContext testContext) {
     InjectionOptionDTO injectionOptionDTO = new InjectionOptionDTO();
     injectionOptionDTO.setInjectionSource(InjectionSourceType.CiquALXml);
     injectionOptionDTO.setCliqAlAlimFile("alim_2017 11 21.xml");
