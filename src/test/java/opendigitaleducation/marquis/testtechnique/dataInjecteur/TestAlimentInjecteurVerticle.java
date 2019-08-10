@@ -18,13 +18,13 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("Testing Alimentation injection service")
+@DisplayName("Testing Alimentation injecteur service")
 @ExtendWith(VertxExtension.class)
-class TestAlimentInjectionVerticle {
+class TestAlimentInjecteurVerticle {
   private EventBus eventBus;
   @BeforeEach
   void deploy_verticle(Vertx vertx, VertxTestContext testContext) {
-    vertx.deployVerticle(new AlimentInjectionVerticle(), testContext.completing());
+    vertx.deployVerticle(new AlimentInjecteurVerticle(), testContext.completing());
     eventBus = vertx.eventBus();
   }
 
@@ -44,7 +44,7 @@ class TestAlimentInjectionVerticle {
   @Test
   @DisplayName("Checking if the Aliment are saved in mongoDB")
   void CheckAlimentSaved(Vertx vertx, VertxTestContext testContext) {
-    vertx.deployVerticle(new AlimentInjectionVerticle(), id -> {
+    vertx.deployVerticle(new AlimentInjecteurVerticle(), id -> {
       ConfigRetriever retriever = ConfigRetriever.create(vertx);
       retriever.getConfig(ar -> {
 
@@ -52,23 +52,21 @@ class TestAlimentInjectionVerticle {
         MongoClient mongoClient = MongoClient.createShared(vertx, new JsonObject()
           .put("connection_string", projectConfig.MongoDbConnectionString)
           .put("db_name", projectConfig.MongoDbAlimentDb));
-        eventBus.consumer("aliment.data.inject.saved", savedMessage -> {
-          assertThat((int)savedMessage.body()).as("Le code aliment retourné par l'event bus est incorrect").isEqualTo(1500);
-          mongoClient.find(projectConfig.MongoDbCollection,
-            new JsonObject().put("code",1500),findTestAlimentResult ->{
-            assertThat(findTestAlimentResult.succeeded()).isEqualTo(true);
-              List<JsonObject> findAlimentList = findTestAlimentResult.result();
-              assertThat(findAlimentList.size()).isEqualTo(1);
-              AlimentDTO findAliment =findAlimentList.get(0).mapTo(AlimentDTO.class);
-              assertThat(findAliment.getCode()).isEqualTo(1500);
-              //assertThat(findAliment.getCode()).isEqualTo(1501);  //Fail test for refactoring test
-              assertThat(findAliment.getGlucides()).isEqualTo(10);
-              assertThat(findAliment.getLipides()).isEqualTo(5);
-              assertThat(findAliment.getName()).isEqualTo("TestName");
-              assertThat(findAliment.getProteines()).isEqualTo(3);
-              testContext.completeNow();
-            });
-        } );
+        eventBus.consumer("aliment.data.inject.saved", savedMessage -> mongoClient.find(projectConfig.MongoDbCollection,
+          new JsonObject().put("code",1500),findTestAlimentResult ->{
+          assertThat(findTestAlimentResult.succeeded()).isEqualTo(true);
+            List<JsonObject> findAlimentList = findTestAlimentResult.result();
+            assertThat(findAlimentList.size()).isEqualTo(1);
+            findAlimentList.get(0).remove("_id");
+            AlimentDTO findAliment =findAlimentList.get(0).mapTo(AlimentDTO.class);
+            assertThat(findAliment.getCode()).isEqualTo(1500);
+            //assertThat(findAliment.getCode()).isEqualTo(1501);  //Fail test for refactoring test
+            assertThat(findAliment.getGlucides()).isEqualTo(10);
+            assertThat(findAliment.getLipides()).isEqualTo(5);
+            assertThat(findAliment.getName()).isEqualTo("TestName");
+            assertThat(findAliment.getProteines()).isEqualTo(3);
+            testContext.completeNow();
+          }));
         mongoClient.removeDocuments(projectConfig.MongoDbCollection, new JsonObject(), cleanMongoCollectionResult ->
         {
           AlimentDTO testAliment =new AlimentDTO().setName("TestName").setGlucides(10).setLipides(5).setProteines(3).setCode(1500);

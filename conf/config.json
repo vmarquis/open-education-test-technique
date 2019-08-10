@@ -1,8 +1,8 @@
 {
   "MongoDbCollection": "aliments",
-  "MongoDbConnectionString":"mongodb+srv://alimUser:{3&0oT0<6$Bg@cluster0-4yxrk.mongodb.net/test?retryWrites=true&w=majority",
+  "MongoDbConnectionString":"mongodb+srv://dbUser:{3&0oT0<6$Bg@cluster0-4yxrk.mongodb.net/test?retryWrites=true&w=majority&waitQueueMultiple=3000&waitQueueTimeoutMS=30000",
   "MongoDbAlimentDb": "alimentDb",
   "CliqAlDirectory" : "ressources",
   "CliqAlAlimFile" : "alim_2017 11 21.xml",
-  "CliqAlcompoFile" : "compo_2017 11 21.xml"
+  "CliqAlCompoFile" : "compo_2017 11 21.xml"
 }

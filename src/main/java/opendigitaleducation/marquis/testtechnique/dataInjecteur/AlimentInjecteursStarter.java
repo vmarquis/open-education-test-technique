@@ -5,7 +5,7 @@ import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.json.JsonObject;
 
-public class AlimentInjectionStarter implements EventBusStarter {
+public class AlimentInjecteursStarter implements EventBusStarter {
   @Override
   public void StartEventBusConsumer(Vertx vertx, Promise<Object> eventBusStartpromise) {
     EventBus eb = vertx.eventBus();
