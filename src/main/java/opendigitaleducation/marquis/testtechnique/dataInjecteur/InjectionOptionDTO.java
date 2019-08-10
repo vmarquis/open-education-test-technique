@@ -3,6 +3,7 @@ package opendigitaleducation.marquis.testtechnique.dataInjecteur;
 @SuppressWarnings("WeakerAccess") //Public pour Json serialisation
 public class InjectionOptionDTO {
   private String CliqAlAlimFile;
+  private String CliqAlCompoFile;
   private InjectionSourceType InjectionSource;
   private String CliqAlDirectory;
 
@@ -28,5 +29,13 @@ public class InjectionOptionDTO {
 
   public void setCliqAlAlimFile(String cliqAlAlimFile) {
     CliqAlAlimFile = cliqAlAlimFile;
+  }
+
+  public String getCliqAlCompoFile() {
+    return CliqAlCompoFile;
+  }
+
+  public void setCliqAlCompoFile(String cliqAlCompoFile) {
+    CliqAlCompoFile = cliqAlCompoFile;
   }
 }
