@@ -32,7 +32,7 @@ class TestCompositionReaderInjectionVerticle {
 
   @Test
   @DisplayName("Checking  Set Composition reading CliquAl Xml composition")
-  @Timeout(value = 10, timeUnit = TimeUnit.MINUTES)
+  @Timeout(value = 10, timeUnit = TimeUnit.SECONDS)
   void CheckSetComposition(VertxTestContext testContext) {
     JsonObject message = new JsonObject();
 
