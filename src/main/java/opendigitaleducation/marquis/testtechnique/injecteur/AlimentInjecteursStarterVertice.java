@@ -1,13 +1,13 @@
 package opendigitaleducation.marquis.testtechnique.injecteur;
 
+import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
-import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.json.JsonObject;
 
-public class AlimentInjecteursStarter implements EventBusStarter {
+public class AlimentInjecteursStarterVertice extends AbstractVerticle {
   @Override
-  public void StartEventBusConsumer(Vertx vertx, Promise<Object> eventBusStartpromise) {
+  public void start(Promise<Void> startPromise) {
     EventBus eb = vertx.eventBus();
     eb.consumer("aliment.data.inject.start", message -> {
       InjectionOptionDTO injectionOptionDTO = ((JsonObject) message.body()).mapTo(InjectionOptionDTO.class);
@@ -18,6 +18,6 @@ public class AlimentInjecteursStarter implements EventBusStarter {
           eb.send("aliment.data.inject.CiquALXml.start", message.body());
       }
     });
-    eventBusStartpromise.complete();
+    startPromise.complete();
   }
 }

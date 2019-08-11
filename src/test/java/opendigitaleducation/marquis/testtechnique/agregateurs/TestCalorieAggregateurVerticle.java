@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class TestCalorieAggregateurVerticle {
   private EventBus eventBus;
   @Test
-  void get_aliment_calorie(Vertx vertx, VertxTestContext testContext) {
+  void CheckGetCalorie(Vertx vertx, VertxTestContext testContext) {
     eventBus=vertx.eventBus();
     vertx.deployVerticle(new CalorieAggregateurVerticle(), id->
     {

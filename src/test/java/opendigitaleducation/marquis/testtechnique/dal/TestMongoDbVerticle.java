@@ -1,4 +1,4 @@
-package opendigitaleducation.marquis.testtechnique.injecteur;
+package opendigitaleducation.marquis.testtechnique.dal;
 
 import io.vertx.config.ConfigRetriever;
 import io.vertx.core.Vertx;
@@ -9,7 +9,6 @@ import io.vertx.junit5.VertxExtension;
 import io.vertx.junit5.VertxTestContext;
 import opendigitaleducation.marquis.testtechnique.AlimentDTO;
 import opendigitaleducation.marquis.testtechnique.ProjectConfig;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,33 +17,13 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("Testing Alimentation injecteur service")
 @ExtendWith(VertxExtension.class)
-class TestAlimentInjecteurVerticle {
+class TestMongoDbVerticle {
   private EventBus eventBus;
-  @BeforeEach
-  void deploy_verticle(Vertx vertx, VertxTestContext testContext) {
-    vertx.deployVerticle(new AlimentInjecteurVerticle(), testContext.completing());
-    eventBus = vertx.eventBus();
-  }
-
-  @Test
-  @DisplayName("Checking if the Aliment Injection service send message for inject ClicAli data XML")
-  void CheckEventSend(VertxTestContext testContext) {
-    InjectionOptionDTO injectionOptionDTO = new InjectionOptionDTO();
-    injectionOptionDTO.setInjectionSource(InjectionSourceType.CiquALXml);
-    eventBus.send("aliment.data.inject.start", JsonObject.mapFrom(injectionOptionDTO));
-    eventBus.consumer("aliment.data.inject.CiquALXml.start", message -> {
-      //injectionOptionDTO.InjectionSource=null;  //To fail test if refactoring it
-      assertThat(message.body().toString()).as("les parametres d'injection de données ont été modifiés").isEqualTo(JsonObject.mapFrom(injectionOptionDTO).toString());
-      testContext.completeNow();
-    });
-  }
-
   @Test
   @DisplayName("Checking if the Aliment are saved in mongoDB")
   void CheckAlimentSaved(Vertx vertx, VertxTestContext testContext) {
-    vertx.deployVerticle(new AlimentInjecteurVerticle(), id -> {
+    vertx.deployVerticle(new MongoDbVerticle(), id -> {
       ConfigRetriever retriever = ConfigRetriever.create(vertx);
       retriever.getConfig(ar -> {
 
@@ -54,7 +33,7 @@ class TestAlimentInjecteurVerticle {
           .put("db_name", projectConfig.MongoDbAlimentDb));
         eventBus.consumer("aliment.mongo.inject.saved", savedMessage -> mongoClient.find(projectConfig.MongoDbCollection,
           new JsonObject().put("code",1500),findTestAlimentResult ->{
-          assertThat(findTestAlimentResult.succeeded()).isEqualTo(true);
+            assertThat(findTestAlimentResult.succeeded()).isEqualTo(true);
             List<JsonObject> findAlimentList = findTestAlimentResult.result();
             assertThat(findAlimentList.size()).isEqualTo(1);
             findAlimentList.get(0).remove("_id");
@@ -75,6 +54,27 @@ class TestAlimentInjecteurVerticle {
         });
       });
     });
-    }
   }
-
+  @Test
+  void CheckGetAlimentByName(Vertx vertx, VertxTestContext testContext) {
+    eventBus = vertx.eventBus();
+    vertx.deployVerticle(new MongoDbVerticle(), id ->
+    {
+      EventBus eventBus = vertx.eventBus();
+      eventBus.request("aliment.mongo.get.ByName", "Eau du robinet", mongoResult -> {
+        if (mongoResult.succeeded()) {
+          JsonObject alimentJson = ((JsonObject) mongoResult.result().body());
+          alimentJson.remove("_id");
+          AlimentDTO alimentDTO = alimentJson.mapTo(AlimentDTO.class);
+          //assertThat(alimentDTO.getCode()).isEqualTo(18067); //Fail test
+          assertThat(alimentDTO.getCode()).isEqualTo(18066);
+          assertThat(alimentDTO.getProteines()).isEqualTo(0);
+          assertThat(alimentDTO.getLipides()).isEqualTo(0);
+          assertThat(alimentDTO.getGlucides()).isEqualTo(0);
+          assertThat(alimentDTO.getName()).isEqualTo("Eau du robinet");
+          testContext.completeNow();
+        }
+      });
+    });
+  }
+}

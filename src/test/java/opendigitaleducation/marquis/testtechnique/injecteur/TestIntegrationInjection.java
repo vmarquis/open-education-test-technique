@@ -10,6 +10,7 @@ import io.vertx.junit5.VertxExtension;
 import io.vertx.junit5.VertxTestContext;
 import opendigitaleducation.marquis.testtechnique.AlimentDTO;
 import opendigitaleducation.marquis.testtechnique.ProjectConfig;
+import opendigitaleducation.marquis.testtechnique.dal.MongoDbVerticle;
 import opendigitaleducation.marquis.testtechnique.injecteur.cliquAL.xml.AlimentReaderVerticle;
 import opendigitaleducation.marquis.testtechnique.injecteur.cliquAL.xml.CompositionReaderVerticle;
 import org.junit.jupiter.api.DisplayName;
@@ -33,19 +34,21 @@ class TestIntegrationInjection {
   @DisplayName("Checking StartInject CliquAL (reading XML aliments)")
   void TestCalcXmlDataInject(Vertx vertx, VertxTestContext testContext) {
     eventBus = vertx.eventBus();
-    vertx.deployVerticle(new AlimentInjecteurVerticle(),
-      dep1 -> vertx.deployVerticle(new AlimentReaderVerticle(),
-        dep2 -> vertx.deployVerticle(CompositionReaderVerticle.class, new DeploymentOptions().setInstances(4), dep3 -> {
-      ConfigRetriever retriever = ConfigRetriever.create(vertx);
-      retriever.getConfig(ar -> {
-        projectConfig = new ProjectConfig().MapFrom(ar.result());
-        mongoClient = MongoClient.createShared(vertx, new JsonObject()
-          .put("connection_string", projectConfig.MongoDbConnectionString)
-          .put("db_name", projectConfig.MongoDbAlimentDb));
-        mongoClient.removeDocuments(projectConfig.MongoDbCollection, new JsonObject(), cleanMongoCollectionResult ->
-          testCalcXmlDataInject(testContext));
-      });
-    })));
+    vertx.deployVerticle(CompositionReaderVerticle.class, new DeploymentOptions().setInstances(4),
+      dep1 -> vertx.deployVerticle(new MongoDbVerticle(),
+        dep2 -> vertx.deployVerticle(new AlimentInjecteursStarterVertice(),
+          dep3 -> vertx.deployVerticle(new AlimentReaderVerticle(), dep4 ->
+          {
+            ConfigRetriever retriever = ConfigRetriever.create(vertx);
+            retriever.getConfig(ar -> {
+              projectConfig = new ProjectConfig().MapFrom(ar.result());
+              mongoClient = MongoClient.createShared(vertx, new JsonObject()
+                .put("connection_string", projectConfig.MongoDbConnectionString)
+                .put("db_name", projectConfig.MongoDbAlimentDb));
+              mongoClient.removeDocuments(projectConfig.MongoDbCollection, new JsonObject(), cleanMongoCollectionResult ->
+                testCalcXmlDataInject(testContext));
+            });
+          }))));
   }
 
   private void testCalcXmlDataInject(VertxTestContext testContext) {
