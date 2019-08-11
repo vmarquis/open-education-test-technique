@@ -1,1 +1,0 @@
-open-education-test-technique

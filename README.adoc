@@ -1,0 +1,41 @@
+= Open digital Test Technique
+
+image:https://img.shields.io/badge/vert.x-3.8.0-purple.svg[link="https://vertx.io"]
+
+This application was generated using http://start.vertx.io
+
+== Documentation
+https://vmarquis-my.sharepoint.com/:w:/g/personal/vincent_mbf_life/Ed0uT6O_oUxHlf8LQDLno0IBR81Zp9bzfmw-mpXwT_kUbQ?e=yg56Nx[Explication des choix de conception et d'implémentation]
+
+== Testing
+
+[%hardbreaks]
+Test must be launch one by one.
+You can see here link:README.adoc[Test List]
+
+== Running
+Web Server
+```
+
+./gradlew clean run
+```
+and go to http://localhost/Parmesan
+
+To run the data alimentation system (upset in mongoDb)
+```
+./gradlew clean test --tests opendigitaleducation.marquis.testtechnique.TestMainInjecteurLauncher
+```
+
+== Code Entry Points
+[source,Java]
+----
+opendigitaleducation.marquis.testtechnique.MainInjecteurLaucher.start(Promise<Void> startPromise)
+----
+[source,Java]
+----
+opendigitaleducation.marquis.testtechnique.HttpServerVerticle.start(Promise<Void> startPromise)
+----
+
+
+
+
