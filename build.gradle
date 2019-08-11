@@ -22,7 +22,7 @@ application {
 
 sourceCompatibility = '1.8'
 
-def mainVerticleName = 'opendigitaleducation.marquis.testtechnique.MainVerticle'
+def mainVerticleName = 'opendigitaleducation.marquis.testtechnique.HttpServerVerticle'
 def watchForChange = 'src/**/*'
 def doOnChange = './gradlew classes'
 
