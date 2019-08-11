@@ -23,6 +23,7 @@ class TestMongoDbVerticle {
   @Test
   @DisplayName("Checking if the Aliment are saved in mongoDB")
   void CheckAlimentSaved(Vertx vertx, VertxTestContext testContext) {
+    eventBus=vertx.eventBus();
     vertx.deployVerticle(new MongoDbVerticle(), id -> {
       ConfigRetriever retriever = ConfigRetriever.create(vertx);
       retriever.getConfig(ar -> {
@@ -31,7 +32,8 @@ class TestMongoDbVerticle {
         MongoClient mongoClient = MongoClient.createShared(vertx, new JsonObject()
           .put("connection_string", projectConfig.MongoDbConnectionString)
           .put("db_name", projectConfig.MongoDbAlimentDb));
-        eventBus.consumer("aliment.mongo.inject.saved", savedMessage -> mongoClient.find(projectConfig.MongoDbCollection,
+        eventBus.consumer("aliment.mongo.inject.saved",
+          savedMessage -> mongoClient.find(projectConfig.MongoDbCollection,
           new JsonObject().put("code",1500),findTestAlimentResult ->{
             assertThat(findTestAlimentResult.succeeded()).isEqualTo(true);
             List<JsonObject> findAlimentList = findTestAlimentResult.result();
@@ -46,7 +48,7 @@ class TestMongoDbVerticle {
             assertThat(findAliment.getProteines()).isEqualTo(3);
             testContext.completeNow();
           }));
-        mongoClient.removeDocuments(projectConfig.MongoDbCollection, new JsonObject(), cleanMongoCollectionResult ->
+        mongoClient.removeDocuments(projectConfig.MongoDbCollection, new JsonObject().put("code",1500), cleanMongoCollectionResult ->
         {
           AlimentDTO testAliment =new AlimentDTO().setName("TestName").setGlucides(10).setLipides(5).setProteines(3).setCode(1500);
           eventBus.send("aliment.mongo.inject.bulk.save",JsonObject.mapFrom(testAliment));
