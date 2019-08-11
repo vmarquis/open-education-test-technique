@@ -37,7 +37,7 @@ class TestIntegrationCalorieAggregateurVerticle {
     eventBus.consumer("aliment.mongo.inject.saved",savedMessage->{
       CalorieRequestDTO calorieRequestDTO=new CalorieRequestDTO();
       calorieRequestDTO.setCalorieAgregateurType(CalorieAgregateurType.Simple).setSearchedAlimentName("Chocolat");
-      eventBus.send("aliment.calorie.get.ByName",JsonObject.mapFrom(calorieRequestDTO) ,calorieMessage->{
+      eventBus.request("aliment.calorie.get.ByName",JsonObject.mapFrom(calorieRequestDTO) ,calorieMessage->{
         double calorie=(double)calorieMessage.result().body();
         //assertThat(calorie).isEqualTo(50); //Fail tests
         assertThat(calorie).isEqualTo(17);
