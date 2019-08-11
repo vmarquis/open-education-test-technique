@@ -45,19 +45,4 @@ class TestIntegrationCalorieAggregateurVerticle {
       });
     });
   }
-
-
-  private void MockMongo() {
-    MessageConsumer<String> consumer = eventBus.consumer("aliment.mongo.get.ByName");
-    consumer.handler(message -> {
-      AlimentDTO alimentDTO = new AlimentDTO();
-      alimentDTO.setLipides(3.55);
-      alimentDTO.setProteines(2.08);
-      alimentDTO.setGlucides(2.08);
-      alimentDTO.setGlucides(2.08);
-      alimentDTO.setCode(25605);
-      alimentDTO.setName("Champignon à la grecque");
-      message.reply(JsonObject.mapFrom(alimentDTO));
-    });
-  }
 }

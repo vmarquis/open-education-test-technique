@@ -39,7 +39,7 @@ class TestMainInjecteurLauncher {
         assertThat(FoundDocumentResult.result().size()).isEqualTo(0);
         //assertThat(FoundDocumentResult.result()).size().isEqualTo(1);// Test Fail
           testCalcXmlDataInject(testContext);
-          vertx.deployVerticle(new MainInjecteurLaucher());
+          vertx.deployVerticle(new MainInjecteurLaucherVerticle());
       }));
     });
   }

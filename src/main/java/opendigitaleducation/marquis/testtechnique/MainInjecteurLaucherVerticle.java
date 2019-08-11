@@ -12,7 +12,7 @@ import opendigitaleducation.marquis.testtechnique.injecteur.InjectionSourceType;
 import opendigitaleducation.marquis.testtechnique.injecteur.cliquAL.xml.AlimentReaderVerticle;
 import opendigitaleducation.marquis.testtechnique.injecteur.cliquAL.xml.CompositionReaderVerticle;
 
-public class MainInjecteurLaucher extends AbstractVerticle {
+public class MainInjecteurLaucherVerticle extends AbstractVerticle {
   private EventBus eventBus;
 
   @Override
