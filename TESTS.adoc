@@ -1,27 +1,22 @@
-
-To launch your tests:
-```
-./gradlew clean test --tests opendigitaleducation.marquis.testtechnique.TestCalorieAggregateurVerticle
-```
-```
-./gradlew clean test --tests opendigitaleducation.marquis.testtechnique.TestIntegrationCalorieAggregateurVerticle
-```
-```
-./gradlew clean test --tests opendigitaleducation.marquis.testtechnique.TestMongoDbVerticle.CheckGetAlimentByName
-```
-```
-./gradlew clean test --tests opendigitaleducation.marquis.testtechnique.TestMongoDbVerticle.CheckAlimentSaved
-```
-```
-./gradlew clean test --tests opendigitaleducation.marquis.testtechnique..TestAlimentInjecteursStarterVertice
-```
-```
+=== To launch your tests:
+----
+./gradlew clean test --tests opendigitaleducation.marquis.testtechnique.agregateurs.TestCalorieAggregateurVerticle
+----
+----
+./gradlew clean test --tests opendigitaleducation.marquis.testtechnique.agregateurs.TestIntegrationCalorieAggregateurVerticle
+----
+----
+./gradlew clean test --tests opendigitaleducation.marquis.testtechnique.dal.TestMongoDbVerticle.CheckGetAlimentByName
+----
+----
+./gradlew clean test --tests opendigitaleducation.marquis.testtechnique.dal.TestMongoDbVerticle.CheckAlimentSaved
+----
+----
+./gradlew clean test --tests opendigitaleducation.marquis.testtechnique.injecteur.TestAlimentInjecteursStarterVertice
+----
+----
 ./gradlew clean test --tests opendigitaleducation.marquis.testtechnique.TestHttpServerVerticle
-```
-```
+----
+----
 ./gradlew clean test --tests opendigitaleducation.marquis.testtechnique.TestMainInjecteurLauncher
-```
-```
-./gradlew clean test --tests opendigitaleducation.marquis.testtechnique.TestMainInjecteurLauncher
-
-```
+----
